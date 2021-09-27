@@ -1,5 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Filmes } from "./filmes.entity";
+import { Ingresso } from "./ingresso.entity";
 
 @Entity()
 export class Salas extends BaseEntity {
@@ -27,4 +28,7 @@ export class Salas extends BaseEntity {
 
   @OneToMany(() => Filmes, filmes => filmes.sala)
   filmes: Filmes[]
+
+  @OneToMany(() => Ingresso, ingressos => ingressos.sala)
+  ingresso: Ingresso[]
 }

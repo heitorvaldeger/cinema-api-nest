@@ -1,4 +1,5 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Ingresso } from "./ingresso.entity";
 import { Salas } from "./salas.entity";
 
 @Entity()
@@ -43,4 +44,7 @@ export class Filmes extends BaseEntity {
 
   @ManyToOne(() => Salas, sala => sala.filmes)
   sala: Salas
+
+  @ManyToOne(() => Ingresso, ingresso => ingresso.filme)
+  ingresso: Ingresso[]
 }

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SalasRepository } from 'src/models/repositories/SalasRepository.repository';
+import { SalasRepository } from 'src/domain/repositories/SalasRepository.repository';
 import { SalasService } from '../../services/salas/salas.service';
 import { SalasController } from '../../controllers/salas/salas.controller';
 

@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { Filmes } from 'src/models/entities/filmes.entity';
-import { Filme } from 'src/models/filme.model';
+import { Filmes } from 'src/domain/entities/filmes.entity';
+import { Filme } from 'src/domain/filme.model';
 import { FilmesService } from 'src/services/filmes/filmes.service';
 
 @Controller('filmes')

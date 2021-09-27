@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SalasRepository } from 'src/models/repositories/SalasRepository.repository';
-import { Sala } from 'src/models/sala.model';
+import { SalasRepository } from 'src/domain/repositories/SalasRepository.repository';
+import { Sala } from 'src/domain/sala.model';
 
 @Injectable()
 export class SalasService {

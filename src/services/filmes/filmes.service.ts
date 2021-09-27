@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Filme } from 'src/models/filme.model';
-import { FilmesRepository } from 'src/models/repositories/FilmesRepository.repository';
+import { Filme } from 'src/domain/filme.model';
+import { FilmesRepository } from 'src/domain/repositories/FilmesRepository.repository';
 
 @Injectable()
 export class FilmesService {
