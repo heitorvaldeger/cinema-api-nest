@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
 import { Ingresso } from 'src/domain/entities/ingresso.entity';
 import { IngressosService } from 'src/services/ingressos/ingressos.service';
 
@@ -10,7 +10,7 @@ export class IngressosController {
 
   @Post('comprar')
   async comprar (
-    @Body() ingressoModel: Ingresso
+    @Body(ValidationPipe) ingressoModel: Ingresso
   ) {
     const ingresso = await this.ingressosService.comprar(ingressoModel);
 

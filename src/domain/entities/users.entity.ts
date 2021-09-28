@@ -32,6 +32,9 @@ export class User extends BaseEntity {
   @Column({ nullable: false })
   senha: string;
 
+  @Column({ nullable: false })
+  salt: string;
+
   @IsNotEmpty({
     message: 'Informe o nome do usuário',
   })

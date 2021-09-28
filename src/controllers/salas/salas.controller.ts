@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
+import { Filmes } from 'src/domain/entities/filmes.entity';
 import { Salas } from 'src/domain/entities/salas.entity';
-import { Sala } from 'src/domain/sala.model';
 import { SalasService } from 'src/services/salas/salas.service';
 
 @Controller('salas')
@@ -16,12 +16,49 @@ export class SalasController {
     return salas;
   }
 
+  @Get(':idSala/filmes')
+  async findFilmesBySala (
+    @Param('idSala') idSala: number
+  ) : Promise<Filmes[]> {
+    const filmes = await this.salasService.findFilmesBySala(idSala);
+
+    return filmes;
+  }
+
   @Post()
   async create (
-    @Body() salaModel: Sala
+    @Body(ValidationPipe) salaModel: Salas
   ) : Promise<Salas> {
     const sala = await this.salasService.create(salaModel);
 
     return sala;
+  }
+
+  @Put(':idSala')
+  async update (
+    @Param('idSala') idSala: number,
+    @Body(ValidationPipe) salaModel: Salas
+  ) {
+    const sala = await this.salasService.update(salaModel, idSala);
+
+    return sala;
+  }
+
+  @Delete(':idSala')
+  async delete (
+    @Param('idSala') idSala: number
+  ) {
+    const deleted = await this.salasService.delete(idSala);
+
+    if (deleted) {
+      return {
+        message: 'Sala removida com sucesso'
+      };
+    }
+    else {
+      return {
+        message: 'Sala não foi removida com sucesso'
+      };
+    }
   }
 }

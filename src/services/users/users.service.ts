@@ -22,6 +22,7 @@ export class UsersService {
     const userRepository = this.userRepository.create();
     userRepository.nome = nome;
     userRepository.email = email;
+    userRepository.salt = salt;
 
     userRepository.confirmationToken = crypto.randomBytes(32).toString('hex');
 

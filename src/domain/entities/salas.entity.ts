@@ -1,3 +1,4 @@
+import { IsInt, IsNotEmpty } from "class-validator";
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Filmes } from "./filmes.entity";
 import { Ingresso } from "./ingresso.entity";
@@ -8,12 +9,19 @@ export class Salas extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @IsNotEmpty({
+    message: 'O campo nome é obrigatório',
+  })
   @Column({
     length: 20,
     nullable: false
   })
   nome: string;
 
+  @IsInt()
+  @IsNotEmpty({
+    message: 'O campo limite cadeiras é obrigatório',
+  })
   @Column({
     type: 'int',
     nullable: false
@@ -26,9 +34,9 @@ export class Salas extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Filmes, filmes => filmes.sala)
-  filmes: Filmes[]
+  @OneToMany(() => Filmes, filmes => filmes.sala, { onDelete: 'CASCADE' })
+  filmes: Promise<Filmes[]>
 
-  @OneToMany(() => Ingresso, ingressos => ingressos.sala)
+  @OneToMany(() => Ingresso, ingressos => ingressos.sala, { onDelete: 'CASCADE' })
   ingresso: Ingresso[]
 }

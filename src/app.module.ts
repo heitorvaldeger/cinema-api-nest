@@ -5,9 +5,10 @@ import { SalasModule } from './modules/salas/salas.module';
 import { FilmesModule } from './modules/filmes/filmes.module';
 import { UsersModule } from './modules/users/users.module';
 import { IngressosModule } from './modules/ingressos/ingressos.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), SalasModule, FilmesModule, UsersModule, IngressosModule],
+  imports: [TypeOrmModule.forRoot(typeOrmConfig), SalasModule, FilmesModule, UsersModule, IngressosModule, AuthModule],
   controllers: [],
   providers: [],
 })
