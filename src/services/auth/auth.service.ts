@@ -33,7 +33,8 @@ export class AuthService {
 
     if(user && (senhaValida === user.senha)) {
       const jwtPayload = {
-        id: user.id
+        id: user.id,
+        nome: user.nome
       };
 
       const token = await this.jwtService.sign(jwtPayload);

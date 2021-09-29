@@ -1,5 +1,8 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, UseGuards, ValidationPipe } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
+import { Role } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
 import { Filmes } from 'src/domain/entities/filmes.entity';
 import { FilmesService } from 'src/services/filmes/filmes.service';
 
@@ -18,6 +21,8 @@ export class FilmesController {
     return filme;
   }
 
+  @Role('GERENTE')
+  @UseGuards(AuthGuard(), RolesGuard)
   @Post()
   async create (
     @Body(ValidationPipe) filmeModel: Filmes
@@ -27,6 +32,8 @@ export class FilmesController {
     return filme;
   }
 
+  @Role('GERENTE')
+  @UseGuards(AuthGuard(), RolesGuard)
   @Put(':idFilme')
   async update (
     @Param('idFilme') idFilme: number,
@@ -37,6 +44,8 @@ export class FilmesController {
     return filme;
   }
 
+  @Role('GERENTE')
+  @UseGuards(AuthGuard(), RolesGuard)
   @Delete(':idFilme')
   async delete(
     @Param('idFilme') idFilme: number,
@@ -45,9 +54,9 @@ export class FilmesController {
     const deleted = await this.filmesService.delete(idFilme);
 
     if(deleted) {
-      return {
+      res.status(HttpStatus.OK).send({
         message: 'Filme removido com sucesso'
-      };
+      });
     }
     else {
       res.status(HttpStatus.BAD_REQUEST).send({

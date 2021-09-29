@@ -17,20 +17,20 @@ export class UsersService {
 
   async signUp (user: User) {
     const { email, nome, senha } = user;
-    const salt = await bcrypt.genSalt();
-
-    const userRepository = this.userRepository.create();
-    userRepository.nome = nome;
-    userRepository.email = email;
-    userRepository.salt = salt;
-
-    userRepository.confirmationToken = crypto.randomBytes(32).toString('hex');
-
-    userRepository.senha = await bcrypt.hash(senha, salt);
 
     if (await this.findUserByEmail(email)) {
       throw new ConflictException('Endereço de email já está em uso');
     }
+
+    const salt = await bcrypt.genSalt();
+
+    const userRepository = this.userRepository.create({
+      nome: nome,
+      email: email,
+      salt: salt,
+      confirmationToken: crypto.randomBytes(32).toString('hex'),
+      senha: await bcrypt.hash(senha, salt)
+    });
 
     try {
       await userRepository.save();
@@ -45,6 +45,37 @@ export class UsersService {
     }
   }
 
+  async createUserGerente(user: User) {
+    const { nome, email, senha } = user;
+
+    if (await this.findUserByEmail(email)) {
+      throw new ConflictException('Endereço de email já está em uso');
+    }
+
+    const salt = await bcrypt.genSalt();
+
+    const userRepository = this.userRepository.create({
+      nome: nome,
+      email: email,
+      salt: salt,
+      role: 'GERENTE',
+      confirmationToken: crypto.randomBytes(32).toString('hex'),
+      senha: await bcrypt.hash(senha, salt)
+    });
+
+    try {
+      await userRepository.save();
+
+      delete userRepository.senha;
+
+      return userRepository;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Erro ao salvar o usuário do tipo GERENTE no banco de dados',
+      );
+    }
+  }
+
   async findUserByEmail (email: string) {
     try {
       const user = await this.userRepository.findOne({
@@ -53,7 +84,6 @@ export class UsersService {
 
       return user;
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException(
         'Erro ao procurar o usuário no banco de dados',
       );

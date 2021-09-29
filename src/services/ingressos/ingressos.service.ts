@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ingresso } from 'src/domain/entities/ingresso.entity';
 import { IngressoRepository } from 'src/domain/repositories/IngressoRepository.repositoty';
@@ -12,19 +12,45 @@ export class IngressosService {
 
   }
 
-  async comprar (ingresso: Ingresso) {
-    const { preco, sala, filme, user } = ingresso;
+  async getInfoIngresso (idIngresso: number) {
+    try {
+      const ingresso = await this.ingressoRepository.findOne({
+        id: idIngresso
+      });
 
-    const ingressoRepository = this.ingressoRepository.create();
-    ingressoRepository.preco = preco;
-    ingressoRepository.sala = sala;
-    ingressoRepository.filme = filme;
-    ingressoRepository.user = user;
+      if (!ingresso) {
+        throw new NotFoundException(
+          {
+            message: "Ingresso não encontrada"
+          }
+        );
+      }
+
+      const filme = await ingresso.filme;
+      const user = await ingresso.user;
+      const sala = await ingresso.sala;
+
+      const ingressoData = {
+        preco: ingresso.preco,
+        filme: filme.titulo,
+        user: user.nome,
+        sala: sala.nome,
+        horario: filme.horario
+      };
+
+      return ingressoData;
+    } catch (error) {
+      
+    }
+  }
+
+  async comprar (ingresso: Ingresso) {
+    const ingressoRepository = this.ingressoRepository.create(ingresso);
 
     try {
       await ingressoRepository.save();
 
-      return ingressoRepository;
+      return ingresso;
     } catch (error) {
       throw new InternalServerErrorException(
         'Erro ao procurar o usuário no banco de dados',

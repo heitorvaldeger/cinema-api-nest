@@ -6,7 +6,7 @@ import { Ingresso } from "./ingresso.entity";
 @Unique(['email'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @IsNotEmpty({
     message: 'Informe um endereço de email',
