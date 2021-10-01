@@ -13,18 +13,20 @@ export class IngressosService {
   }
 
   async getInfoIngresso (idIngresso: number) {
-    try {
-      const ingresso = await this.ingressoRepository.findOne({
-        id: idIngresso
-      });
 
-      if (!ingresso) {
-        throw new NotFoundException(
-          {
-            message: "Ingresso não encontrada"
-          }
-        );
-      }
+    const ingresso = await this.ingressoRepository.findOne({
+      id: idIngresso
+    });
+
+    if (!ingresso) {
+      throw new NotFoundException(
+        {
+          message: "Ingresso não encontrada"
+        }
+      );
+    }
+    
+    try {
 
       const filme = await ingresso.filme;
       const user = await ingresso.user;
@@ -40,7 +42,9 @@ export class IngressosService {
 
       return ingressoData;
     } catch (error) {
-      
+      throw new InternalServerErrorException(
+        'Erro ao obter informações sobre um ingresso',
+      );
     }
   }
 

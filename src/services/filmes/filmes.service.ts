@@ -11,25 +11,15 @@ export class FilmesService {
   ) {}
 
   async findFilmeById (idFilme: number) {
-    try {
-      const filme = await this.filmesRepository.findOne({
-        id: idFilme
-      });
+    const filme = await this.filmesRepository.findOne({
+      id: idFilme
+    });
 
-      if (!filme) {
-        throw new NotFoundException(
-          {
-            message: "Filme não encontrado"
-          }
-        );
-      }
-
-      return filme;
-    } catch (error) {
-      throw new InternalServerErrorException(
-        'Erro ao buscar um filme',
-      );
+    if (!filme) {
+      throw new NotFoundException({message: "Filme não encontrado"});
     }
+
+    return filme; 
   }
 
   async create (filmeModel: Filmes) {
@@ -80,9 +70,9 @@ export class FilmesService {
   }
 
   async delete (idFilme: number) {
-    try {
-      const filme = await this.findFilmeById(idFilme);
+    const filme = await this.findFilmeById(idFilme);
 
+    try {
       await filme.remove();
 
       return true;

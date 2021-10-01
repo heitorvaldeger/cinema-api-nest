@@ -16,7 +16,9 @@ export class SalasService {
 
       return salas;
     } catch (error) {
-      
+      throw new InternalServerErrorException(
+        'Erro ao buscar os filmes',
+      );
     }
   }
 
@@ -33,25 +35,19 @@ export class SalasService {
   }
 
   async findSalaById (idSala: number) {
-    try {
-      const sala = await this.salasRepository.findOne({
-        id: idSala
-      });
+    const sala = await this.salasRepository.findOne({
+      id: idSala
+    });
 
-      if (!sala) {
-        throw new NotFoundException(
-          {
-            message: "Sala não encontrada"
-          }
-        );
-      }
-
-      return sala;
-    } catch (error) {
-      throw new InternalServerErrorException(
-        'Erro ao buscar uma sala',
+    if (!sala) {
+      throw new NotFoundException(
+        {
+          message: "Sala não encontrada"
+        }
       );
     }
+
+    return sala;
   }
   async create (salaModel: Salas) {
     const { nome, limiteCadeiras } = salaModel;
@@ -75,8 +71,8 @@ export class SalasService {
   async update (salaModel: Salas, idSala: number) {
     const { nome, limiteCadeiras } = salaModel;
 
+    const sala = await this.findSalaById(idSala);
     try {
-      const sala = await this.findSalaById(idSala);
 
       sala.nome = nome;
       sala.limiteCadeiras = limiteCadeiras;
@@ -92,9 +88,9 @@ export class SalasService {
   }
 
   async delete (idSala: number) : Promise<boolean> {
-    try {
-      const sala = await this.findSalaById(idSala);
+    const sala = await this.findSalaById(idSala);
 
+    try {
       await sala.remove();
 
       return true;
