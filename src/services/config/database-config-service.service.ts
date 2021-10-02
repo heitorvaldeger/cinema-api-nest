@@ -16,8 +16,11 @@ export class DatabaseConfigService {
           database: this.configService.get<string>('DB_DATABASE'),
           synchronize: true,
           entities: [__dirname + '/../../**/*.entity.{js,ts}'],
+          ssl: true,
           extra: {
-            ssl: true
+            ssl: {
+              rejectUnauthorized: false
+            }
           }
       }
   };
