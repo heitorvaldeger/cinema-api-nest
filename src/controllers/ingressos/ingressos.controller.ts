@@ -24,7 +24,7 @@ export class IngressosController {
 
   @Role('CLIENTE')
   @UseGuards(AuthGuard(), RolesGuard)
-  @Post('compras')
+  @Post('comprar')
   async comprar (
     @Body(ValidationPipe) ingressoModel: Ingresso
   ) {
