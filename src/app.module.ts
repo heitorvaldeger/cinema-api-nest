@@ -7,6 +7,7 @@ import { IngressosModule } from './modules/ingressos/ingressos.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseConfigService } from './services/config/database-config-service.service';
+import { HomeController } from './controllers/home/home.controller';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { DatabaseConfigService } from './services/config/database-config-service
     IngressosModule,
     AuthModule
   ],
-  controllers: [],
+  controllers: [HomeController],
   providers: [],
 })
 export class AppModule {}
